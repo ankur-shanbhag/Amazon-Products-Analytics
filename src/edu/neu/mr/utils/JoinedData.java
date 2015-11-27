@@ -1,9 +1,5 @@
+package edu.neu.mr.utils;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-/**
- * Created by vjain on 11/25/15.
- */
-
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JoinedData {

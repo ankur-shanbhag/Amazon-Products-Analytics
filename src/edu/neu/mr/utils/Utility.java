@@ -1,3 +1,4 @@
+package edu.neu.mr.utils;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -5,9 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-/**
- * Created by vjain on 11/4/15.
- */
 public class Utility {
 
 
