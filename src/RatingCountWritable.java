@@ -2,16 +2,11 @@
  * Created by vjain on 11/25/15.
  */
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.Text;
-import org.apache.hadoop.io.Writable;
-
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.Date;
+
+import org.apache.hadoop.io.Writable;
 
 
 public class RatingCountWritable implements Writable{
