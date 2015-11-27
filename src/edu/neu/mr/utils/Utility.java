@@ -2,9 +2,6 @@ package edu.neu.mr.utils;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
 
 public class Utility {
 
@@ -36,7 +33,6 @@ public class Utility {
 
         String [] comaSplits = sb.toString().split(",");
         DateProductWritable fData = new DateProductWritable();
-        int i=0;
         fData.setAsin(String.valueOf(comaSplits[0]));
         fData.setDate(Long.valueOf(getDate(comaSplits[2],month)));
         return fData;
