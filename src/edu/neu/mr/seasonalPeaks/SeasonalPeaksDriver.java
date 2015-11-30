@@ -21,15 +21,17 @@ public class SeasonalPeaksDriver {
             System.exit(2);
         }
 
-        Job job = new Job(conf);
+        Job job = new Job(conf, "driver");
         job.setJarByClass(SeasonalPeaksDriver.class);
         job.setMapperClass(SeasonalPeaksMapper.class);
-
+        job.setCombinerClass(SeasonalPeaksReducer.class);
         job.setReducerClass(SeasonalPeaksReducer.class);
+        job.setPartitionerClass(SeasonalPeaksPartitioner.class);
         job.setOutputKeyClass(DateProductWritable.class);
         job.setOutputValueClass(RatingCountWritable.class);
         job.setMapOutputKeyClass(DateProductWritable.class);
         job.setMapOutputValueClass(RatingCountWritable.class);
+        job.setNumReduceTasks(12);
         for (int i = 0; i < otherArgs.length - 1; ++i) {
             FileInputFormat.addInputPath(job, new Path(otherArgs[i]));
         }

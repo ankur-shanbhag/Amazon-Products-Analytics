@@ -14,11 +14,11 @@ import edu.neu.mr.utils.Utility;
 public class SeasonalPeaksMapper extends Mapper<Object, Text, DateProductWritable, RatingCountWritable> {
 
     // setting all the parameters for flight filtering
-    private long START_YEAR = 2007;
-    private long END_YEAR = 2009;
-    private String TARGET_ASIN = "";
+    private long START_YEAR = 2013;
+    private long END_YEAR = 2014;
+    private String TARGET_ASIN = "120401325X";
     
-    private Map<DateProductWritable,RatingCountWritable> localMap = new HashMap<DateProductWritable,RatingCountWritable>(); 
+    private Map<DateProductWritable,RatingCountWritable> localMap = new HashMap<DateProductWritable,RatingCountWritable>();
     
     public void setup(){
 		// no task initiation needed
@@ -30,12 +30,12 @@ public class SeasonalPeaksMapper extends Mapper<Object, Text, DateProductWritabl
         DateProductWritable outKeyMonth = Utility.getWritableKey(value.toString(), true);
         RatingCountWritable outValue = Utility.getWritableValue(value.toString());
 
-//        if (keepDataPoint(outKeyYear)) {
-//            context.write(outKeyYear, outValue);
-//            context.write(outKeyMonth, outValue);
-//        }
+    /*    if (keepDataPoint(outKeyYear)) {
+            context.write(outKeyYear, outValue);
+            context.write(outKeyMonth, outValue);
+        }*/
         
-        if(keepDataPoint(outKeyYear)){
+        if(outKeyYear !=null && outKeyMonth != null && outValue != null && keepDataPoint(outKeyYear)){
         	RatingCountWritable currValue = localMap.get(outKeyMonth);
 			if (currValue != null) {
 				//updating the overall average
@@ -65,7 +65,7 @@ public class SeasonalPeaksMapper extends Mapper<Object, Text, DateProductWritabl
 			RatingCountWritable outValue = entry.getValue();
 			try {
 				context.write(outKeyMonth, outValue);
-			} catch (InterruptedException | IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
