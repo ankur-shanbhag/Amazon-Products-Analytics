@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 public class Utility {
 
 
-    // this function reads the data.csv and selects the key fields from the file and initializes the FlightData object.
+    // this function reads the data.csv and selects the key fields from the file and initializes the object.
     public static DateProductWritable getWritableKey(String dataPoint,boolean month){
         boolean validDataPoint = true;
 
@@ -36,6 +36,7 @@ public class Utility {
         DateProductWritable fData = new DateProductWritable();
         fData.setAsin(String.valueOf(comaSplits[0]));
 
+        // if date is not long then row is invalid
         try {
             Long.parseLong(comaSplits[2]);
             }
@@ -61,7 +62,7 @@ public class Utility {
             return true;
     }
 
-
+    // converts unix epoch time to date and extracts yyyy or yyyyMM from date
     public static long getDate(String date,boolean month){
         long dateTemp = Long.parseLong(date) * 10000;
         Date reviewDate = new Date(dateTemp);
@@ -76,12 +77,13 @@ public class Utility {
         }
     }
 
-    // this function reads the output form first map reduce and sets the FlightAggregation object with count and avegare
+    // this function creates the value for each asin,date key
     public static RatingCountWritable getWritableValue(String dataPoint){
         boolean validDataPoint = true;
         RatingCountWritable fdd = new RatingCountWritable();
         String [] comasplit = dataPoint.split(",");
         fdd.setCount(1);
+        // if average is not double then row is invalid
         try {
             Double.parseDouble(comasplit[1]);
         }

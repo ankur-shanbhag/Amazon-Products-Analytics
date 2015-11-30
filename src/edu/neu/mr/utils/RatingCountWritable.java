@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.apache.hadoop.io.Writable;
 
 
+// this is writable for map output value and contains average overall rating and count
 public class RatingCountWritable implements Writable{
     private int count;
     private double overall;

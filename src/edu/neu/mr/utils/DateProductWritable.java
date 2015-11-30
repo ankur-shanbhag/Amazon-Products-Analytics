@@ -7,13 +7,16 @@ import java.io.IOException;
 import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.io.WritableComparable;
 
+// this is writable for map output key and contains date (yyyy or yyyymm)
+// and asin which is the product id
 public class DateProductWritable implements WritableComparable<DateProductWritable> {
 	private long date;
 	private String asin;
 
+
 	public DateProductWritable() {
 		date = 0;
-		asin = "";
+		//asin = "";
 	}
 
 	public String getAsin() {
@@ -42,6 +45,7 @@ public class DateProductWritable implements WritableComparable<DateProductWritab
 		out.writeUTF(asin);
 	}
 
+	// function to compare two objects for sorting
 	public int compareTo(DateProductWritable o) {
 		String thisAsin = this.getAsin();
 		String thatAsin = o.getAsin();
@@ -50,15 +54,6 @@ public class DateProductWritable implements WritableComparable<DateProductWritab
 
 		return (thisDate < thatDate ? -1 : (thisDate==thatDate? 0 : 1));
 	}
-
-	/*public boolean equals(DateProductWritable o) {
-		String thisAsin = this.getAsin();
-		String thatAsin = o.getAsin();
-		long thisDate = this.getDate();
-		long thatDate = o.getDate();
-
-		return (thisDate == thatDate && thisAsin == thatAsin);
-	}*/
 
 	@Override
 	public boolean equals(Object o) {

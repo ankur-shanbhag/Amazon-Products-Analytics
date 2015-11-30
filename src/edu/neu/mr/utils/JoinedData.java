@@ -1,6 +1,8 @@
 package edu.neu.mr.utils;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+// this class is used to map the json file to csv using the JsonToCSVWithMetadata
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JoinedData {
     private String asin;

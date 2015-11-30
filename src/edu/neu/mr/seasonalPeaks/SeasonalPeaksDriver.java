@@ -10,11 +10,16 @@ import org.apache.hadoop.util.GenericOptionsParser;
 import edu.neu.mr.utils.DateProductWritable;
 import edu.neu.mr.utils.RatingCountWritable;
 
+
+// map reduce driver function used to set the configuration
+// of the job and read input parameters
 public class SeasonalPeaksDriver {
 
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
-        
+
+        // will recieve year range and product id in parametrs do conf.set here
+
         String[] otherArgs = (new GenericOptionsParser(conf, args)).getRemainingArgs();
         if (otherArgs.length < 2) {
             System.err.println("Usage:seasonal peak <in> [<in>...] <out>");
@@ -31,7 +36,7 @@ public class SeasonalPeaksDriver {
         job.setOutputValueClass(RatingCountWritable.class);
         job.setMapOutputKeyClass(DateProductWritable.class);
         job.setMapOutputValueClass(RatingCountWritable.class);
-        job.setNumReduceTasks(12);
+        job.setNumReduceTasks(12);// should come into parameters
         for (int i = 0; i < otherArgs.length - 1; ++i) {
             FileInputFormat.addInputPath(job, new Path(otherArgs[i]));
         }

@@ -15,6 +15,7 @@ import edu.neu.mr.utils.DateProductWritable;
 import edu.neu.mr.utils.RatingCountWritable;
 import edu.neu.mr.utils.Utility;
 
+// partitioner is used to send data for each months to different reducers
 public class SeasonalPeaksPartitioner extends Partitioner<DateProductWritable,RatingCountWritable>{
     public int getPartition(DateProductWritable key, RatingCountWritable value,int numberParts){
         int month = (int) key.getDate() % 100;

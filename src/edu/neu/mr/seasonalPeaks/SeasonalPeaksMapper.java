@@ -13,28 +13,26 @@ import edu.neu.mr.utils.Utility;
 
 public class SeasonalPeaksMapper extends Mapper<Object, Text, DateProductWritable, RatingCountWritable> {
 
-    // setting all the parameters for flight filtering
+    // these parameters will be set from the conf once they are passed on
+    // year range adn product id
     private long START_YEAR = 2013;
     private long END_YEAR = 2014;
     private String TARGET_ASIN = "120401325X";
-    
+
+    // per task mapping
     private Map<DateProductWritable,RatingCountWritable> localMap = new HashMap<DateProductWritable,RatingCountWritable>();
     
     public void setup(){
 		// no task initiation needed
 	}
 
-    // map output has a key of destination and value as the FlightData custom writable
+    // map output is DateProductWritable as key and RatingCountWritable as value
     public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
         DateProductWritable outKeyYear = Utility.getWritableKey(value.toString(), false);
         DateProductWritable outKeyMonth = Utility.getWritableKey(value.toString(), true);
         RatingCountWritable outValue = Utility.getWritableValue(value.toString());
 
-    /*    if (keepDataPoint(outKeyYear)) {
-            context.write(outKeyYear, outValue);
-            context.write(outKeyMonth, outValue);
-        }*/
-        
+
         if(outKeyYear !=null && outKeyMonth != null && outValue != null && keepDataPoint(outKeyYear)){
         	RatingCountWritable currValue = localMap.get(outKeyMonth);
 			if (currValue != null) {
@@ -52,13 +50,16 @@ public class SeasonalPeaksMapper extends Mapper<Object, Text, DateProductWritabl
     }
 
 
+    // filtering critera in order to keep reviews only of that product and between the given year range
     private Boolean keepDataPoint(DateProductWritable datapoint) {
         if (datapoint.getDate() >= START_YEAR && datapoint.getDate() <= END_YEAR && datapoint.getAsin().equals(TARGET_ASIN))
             return true;
         else
             return false;
     }
-    
+
+
+    // emitting the key value pairs in map, and writing in context
     public void cleanup(Context context){
 		for (Entry<DateProductWritable, RatingCountWritable> entry : localMap.entrySet()) {
 			DateProductWritable outKeyMonth = entry.getKey();

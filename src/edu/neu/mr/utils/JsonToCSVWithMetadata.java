@@ -23,15 +23,17 @@ public class JsonToCSVWithMetadata {
             BufferedReader bReader = new BufferedReader(new FileReader(args[0]));
             BufferedWriter bWriterData = new BufferedWriter(new FileWriter(args[1] + "//" + f.getName() + ".txt"));
             try {
+                // json object mapper reads json file and puts data in JoinedData object
                 ObjectMapper mapper = new ObjectMapper();
                 String line = "";
-                boolean wroteMetaData = false;
+                boolean wroteMetaData = false; // this is to handle first line (column names)
                 StringBuilder sb = new StringBuilder();
                 String fileWrite = "";
                 while ((line = bReader.readLine()) != null) {
                     JoinedData jsonItem = mapper.readValue(line,JoinedData.class);
                     sb.setLength(0);
                     if(!wroteMetaData){
+                        // using reflection in order to get name of the fields to write as ehader in csv
                         for (Field field : jsonItem.getClass().getDeclaredFields()) {
                             field.setAccessible(true); // if you want to modify private fields
                             sb.append(field.getName()).append(",");
@@ -42,6 +44,8 @@ public class JsonToCSVWithMetadata {
                         bWriterData.newLine();
                         sb.setLength(0);
                     }
+
+                    // sets the value of the field for that item in the  string builder
                     for (Field field : jsonItem.getClass().getDeclaredFields()) {
                         field.setAccessible(true); // if you want to modify private fields
                         sb.append(field.get(jsonItem)).append(",");
