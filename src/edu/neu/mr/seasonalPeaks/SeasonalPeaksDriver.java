@@ -28,9 +28,9 @@ public class SeasonalPeaksDriver {
             System.exit(2);
         }
 
-        conf.set("startYear",otherArgs[2]);
-        conf.set("endYear",otherArgs[3]);
-        conf.set("asin",otherArgs[4]);
+        conf.set("startYear",otherArgs[otherArgs.length -3]);
+        conf.set("endYear", otherArgs[otherArgs.length -2]);
+        conf.set("asin", otherArgs[otherArgs.length -1]);
         Job job = new Job(conf, "driver");
         job.setJarByClass(SeasonalPeaksDriver.class);
         job.setMapperClass(SeasonalPeaksMapper.class);
@@ -43,11 +43,11 @@ public class SeasonalPeaksDriver {
         job.setMapOutputValueClass(RatingCountWritable.class);
         job.setNumReduceTasks(12);// should come into parameters
         FileInputFormat.setInputDirRecursive(job, true);
-        //for (int i = 0; i < otherArgs.length - 1; ++i) {
+        for (int i = 0; i < otherArgs.length - 4; ++i) {
             FileInputFormat.addInputPath(job, new Path(otherArgs[0]));
-        //}
+        }
 
-        FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
+        FileOutputFormat.setOutputPath(job, new Path(otherArgs[otherArgs.length - 4]));
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 }

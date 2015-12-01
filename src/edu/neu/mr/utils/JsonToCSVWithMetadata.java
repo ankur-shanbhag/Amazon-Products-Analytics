@@ -50,7 +50,7 @@ public class JsonToCSVWithMetadata {
                         field.setAccessible(true); // if you want to modify private fields
                         sb.append(field.get(jsonItem)).append(",");
                     }
-                    fileWrite = sb.toString().substring(0,sb.toString().lastIndexOf(",")-1);
+                    fileWrite = sb.toString().substring(0,sb.toString().lastIndexOf(","));
                     bWriterData.write(fileWrite);
                     bWriterData.newLine();
                 }

@@ -64,8 +64,8 @@ public class Utility {
 
     // converts unix epoch time to date and extracts yyyy or yyyyMM from date
     public static long getDate(String date,boolean month){
-        long dateTemp = Long.parseLong(date) * 10000;
-        Date reviewDate = new Date(dateTemp);
+        long dateTemp = Long.parseLong(date);
+        Date reviewDate = new Date(dateTemp*1000);
         DateFormat df;
         if(month) {
             df = new SimpleDateFormat("yyyyMM");
