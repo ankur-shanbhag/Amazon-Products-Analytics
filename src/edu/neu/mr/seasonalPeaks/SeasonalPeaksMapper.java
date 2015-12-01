@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import edu.neu.mr.utils.DateProductWritable;
@@ -15,9 +16,9 @@ public class SeasonalPeaksMapper extends Mapper<Object, Text, DateProductWritabl
 
     // these parameters will be set from the conf once they are passed on
     // year range adn product id
-    private long START_YEAR = 2013;
-    private long END_YEAR = 2014;
-    private String TARGET_ASIN = "120401325X";
+    private long START_YEAR ;//= 2013;
+    private long END_YEAR ;//= 2014;
+    private String TARGET_ASIN ;//= "120401325X";
 
     // per task mapping
     private Map<DateProductWritable,RatingCountWritable> localMap = new HashMap<DateProductWritable,RatingCountWritable>();
@@ -28,6 +29,10 @@ public class SeasonalPeaksMapper extends Mapper<Object, Text, DateProductWritabl
 
     // map output is DateProductWritable as key and RatingCountWritable as value
     public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+		Configuration conf = context.getConfiguration();
+		START_YEAR = Long.parseLong(conf.get("startYear"));
+		END_YEAR = Long.parseLong(conf.get("endYear"));
+		TARGET_ASIN = conf.get("asin");
         DateProductWritable outKeyYear = Utility.getWritableKey(value.toString(), false);
         DateProductWritable outKeyMonth = Utility.getWritableKey(value.toString(), true);
         RatingCountWritable outValue = Utility.getWritableValue(value.toString());
