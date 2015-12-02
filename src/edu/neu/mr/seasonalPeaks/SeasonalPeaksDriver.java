@@ -44,7 +44,7 @@ public class SeasonalPeaksDriver {
         job.setNumReduceTasks(12);// should come into parameters
         FileInputFormat.setInputDirRecursive(job, true);
         for (int i = 0; i < otherArgs.length - 4; ++i) {
-            FileInputFormat.addInputPath(job, new Path(otherArgs[0]));
+            FileInputFormat.addInputPath(job, new Path(otherArgs[i]));
         }
 
         FileOutputFormat.setOutputPath(job, new Path(otherArgs[otherArgs.length - 4]));
