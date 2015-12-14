@@ -22,15 +22,15 @@ public class SeasonalPeaksDriver {
 
         // will recieve year range and product id in parametrs do conf.set here
 
-        String[] otherArgs = (new GenericOptionsParser(conf, args)).getRemainingArgs();
-        if (otherArgs.length < 5) {
+        //String[] otherArgs = (new GenericOptionsParser(conf, args)).getRemainingArgs();
+        if (args.length < 5) {
             System.err.println("Usage:seasonal peak <in> [<in>...] <out>");
             System.exit(2);
         }
 
-        conf.set("startYear",otherArgs[otherArgs.length -3]);
-        conf.set("endYear", otherArgs[otherArgs.length -2]);
-        conf.set("asin", otherArgs[otherArgs.length -1]);
+        conf.set("startYear",args[args.length -3]);
+        conf.set("endYear", args[args.length -2]);
+        conf.set("asin", args[args.length -1]);
         Job job = new Job(conf, "driver");
         job.setJarByClass(SeasonalPeaksDriver.class);
         job.setMapperClass(SeasonalPeaksMapper.class);
@@ -43,11 +43,11 @@ public class SeasonalPeaksDriver {
         job.setMapOutputValueClass(RatingCountWritable.class);
         job.setNumReduceTasks(12);// should come into parameters
         FileInputFormat.setInputDirRecursive(job, true);
-        for (int i = 0; i < otherArgs.length - 4; ++i) {
-            FileInputFormat.addInputPath(job, new Path(otherArgs[i]));
+        for (int i = 0; i < args.length - 4; ++i) {
+            FileInputFormat.addInputPath(job, new Path(args[i]));
         }
 
-        FileOutputFormat.setOutputPath(job, new Path(otherArgs[otherArgs.length - 4]));
+        FileOutputFormat.setOutputPath(job, new Path(args[args.length - 4]));
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 }

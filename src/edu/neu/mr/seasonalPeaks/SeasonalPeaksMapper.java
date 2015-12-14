@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hdfs.DFSClient;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 import edu.neu.mr.utils.DateProductWritable;
@@ -23,20 +24,19 @@ public class SeasonalPeaksMapper extends Mapper<Object, Text, DateProductWritabl
     // per task mapping
     private Map<DateProductWritable,RatingCountWritable> localMap = new HashMap<DateProductWritable,RatingCountWritable>();
     
-    public void setup(){
+    public void setup(Context context){
 		// no task initiation needed
-	}
-
-    // map output is DateProductWritable as key and RatingCountWritable as value
-    public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
 		Configuration conf = context.getConfiguration();
 		START_YEAR = Long.parseLong(conf.get("startYear"));
 		END_YEAR = Long.parseLong(conf.get("endYear"));
 		TARGET_ASIN = conf.get("asin");
+	}
+
+    // map output is DateProductWritable as key and RatingCountWritable as value
+    public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
         DateProductWritable outKeyYear = Utility.getWritableKey(value.toString(), false);
         DateProductWritable outKeyMonth = Utility.getWritableKey(value.toString(), true);
         RatingCountWritable outValue = Utility.getWritableValue(value.toString());
-
 
         if(outKeyYear !=null && outKeyMonth != null && outValue != null && keepDataPoint(outKeyYear)){
         	RatingCountWritable currValue = localMap.get(outKeyMonth);
